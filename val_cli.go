@@ -69,7 +69,7 @@ func status() (string) {
         stdout = "** IN VALIDATOR MODE **\n\n" + string(tmp1)
     }
   } else {
-      stdout = "** MISSING priv_validator_key.json **\nPlease run 'val_cli key set' or 'val_cli key set'\n"
+      stdout = "** MISSING priv_validator_key.json **\nPlease run 'val_cli key set' or 'val_cli key unset'\n"
   }
   return string(stdout)
 }
