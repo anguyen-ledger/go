@@ -40,13 +40,11 @@ make sure that you only have ONE symlink set to the keys/validator_key.json`,
 func switch_mode(key string) (string) {
   var runCmd string
   var stdout string
-  runCmd = "runuser -u cosmos -- rm /home/cosmos/config/priv_validator_key.json || true"
+  runCmd = "runuser -u cosmos -- ln -f -s /home/cosmos/config/keys/" + key + " /home/cosmos/config/priv_validator_key.json"
   tmp1, _ := exec.Command("bash", "-euxc", runCmd).CombinedOutput()
-  runCmd = "runuser -u cosmos -- ln -s /home/cosmos/config/keys/" + key + " /home/cosmos/config/priv_validator_key.json"
-  tmp2, _ := exec.Command("bash", "-euxc", runCmd).CombinedOutput()
   runCmd = "runuser -u cosmos -- ls -l /home/cosmos/config/priv_validator_key.json"
-  tmp3, _ := exec.Command("bash", "-euxc", runCmd).CombinedOutput()
-  stdout = string(tmp1) + string(tmp2) + string(tmp3)
+  tmp2, _ := exec.Command("bash", "-euxc", runCmd).CombinedOutput()
+  stdout = string(tmp1) + string(tmp2)
 
   match, _ := regexp.MatchString("may not be used by non-root users", stdout)
   if match {
