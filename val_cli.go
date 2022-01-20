@@ -18,14 +18,11 @@ make sure that you only have ONE symlink set to the keys/validator_key.json`,
       action := string(args[0])
       switch action {
       case "set":
-	r := switch_mode("validator_key.json")
-	fmt.Print(r)
+	fmt.Print(switch_mode("validator_key.json"))
       case "unset":
-	r := switch_mode("fullnode_key.json")
-	fmt.Print(r)
+	fmt.Print(switch_mode("fullnode_key.json"))
       case "status":
-        r := status()
-        fmt.Print(r)
+        fmt.Print(status())
       default:
         fmt.Println("Only 'status', 'set' and 'unset' actions are available")
       }
@@ -39,12 +36,11 @@ make sure that you only have ONE symlink set to the keys/validator_key.json`,
 
 func switch_mode(key string) (string) {
   var runCmd string
-  var stdout string
   runCmd = "runuser -u cosmos -- ln -f -s /home/cosmos/config/keys/" + key + " /home/cosmos/config/priv_validator_key.json"
   tmp1, _ := exec.Command("bash", "-euxc", runCmd).CombinedOutput()
   runCmd = "runuser -u cosmos -- ls -l /home/cosmos/config/priv_validator_key.json"
   tmp2, _ := exec.Command("bash", "-euxc", runCmd).CombinedOutput()
-  stdout = string(tmp1) + string(tmp2)
+  stdout := string(tmp1) + string(tmp2)
 
   match, _ := regexp.MatchString("may not be used by non-root users", stdout)
   if match {
