@@ -61,9 +61,9 @@ func status() (string) {
 
   if len(tmp1) > 0 {
     if match {
-	stdout = "** " + string(tmp2) + " : in BACKUP mode **\n\n" + string(tmp1)
+	stdout = "** " + string(tmp2) + " : in BACKUP mode **\n" + string(tmp1)
     } else {
-        stdout = "** " + string(tmp2) + " : in VALIDATOR mode **\n\n" + string(tmp1)
+        stdout = "** " + string(tmp2) + " : in VALIDATOR mode **\n" + string(tmp1)
     }
   } else {
       stdout = "** " + string(tmp2) + " : tendermint key is missing **\nPlease run 'val_cli key set' or 'val_cli key unset'\n"
