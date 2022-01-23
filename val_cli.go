@@ -52,18 +52,21 @@ func switch_mode(key string) (string) {
 
 func status() (string) {
   var stdout string
-  runCmd := "ls -l /home/cosmos/config | grep -i priv_validator_key.json"
+  var runCmd string
+  runCmd = "ls -l /home/cosmos/config | grep -i priv_validator_key.json"
   tmp1, _ := exec.Command("bash", "-c", runCmd).Output()
+  runCmd = "hostname | tr -d '\n'"
+  tmp2, _ := exec.Command("bash", "-c", runCmd).Output()
   match, _ := regexp.MatchString("fullnode_key.json", string(tmp1))
 
   if len(tmp1) > 0 {
     if match {
-        stdout = "** IN BACKUP MODE **\n\n" + string(tmp1)
+	stdout = "** " + string(tmp2) + " : in BACKUP mode **\n\n" + string(tmp1)
     } else {
-        stdout = "** IN VALIDATOR MODE **\n\n" + string(tmp1)
+        stdout = "** " + string(tmp2) + " : in VALIDATOR mode **\n\n" + string(tmp1)
     }
   } else {
-      stdout = "** MISSING priv_validator_key.json **\nPlease run 'val_cli key set' or 'val_cli key unset'\n"
+      stdout = "** " + string(tmp2) + " : tendermint key is missing **\nPlease run 'val_cli key set' or 'val_cli key unset'\n"
   }
   return string(stdout)
 }
